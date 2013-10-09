@@ -1,0 +1,46 @@
+/* _content-shared.scss */
+
+
+
+/* #MAIN
+================================================== */
+#main {
+
+  &.default {margin-top:em(55px);min-height:600px;}
+  &.blog    {}
+  &.page    {margin-top:em(55px);}
+  &.single  {margin-top:em(55px);}
+}
+
+
+  /* .content
+  ================================================== */
+  #content{
+    @extend %span9;
+
+    &.full-width { width:100%; }
+  }
+
+    /* ARTICLE
+    ================================================== */
+    article {
+
+    }
+
+
+
+
+  /* SIDEBAR
+  ================================================== */
+  #main .sidebar{
+    @extend %span3;
+
+    a {
+      &:hover {text-decoration:underline;}
+    }
+
+    .sidebar-inner {
+      
+    }
+
+  }

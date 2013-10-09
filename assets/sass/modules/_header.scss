@@ -1,0 +1,65 @@
+/* _header.scss */
+
+
+/* HEADER.default
+================================================== */
+$height-header_default:   88;
+header.default {
+  width:100%;
+
+
+  /* LOGO (span4)
+  ================================================== */
+  .logo {
+    @include inline-block;
+    line-height:#{$height-header_default}px;
+
+    h1,h2,h3,p,span {margin:0;}
+
+    a     {}
+    img   {max-height:100%;width:auto;}
+  }
+
+  /* NAV .header_menu (span8 omega)
+  ================================================== */
+  nav {
+    text-align:right;
+    line-height:#{$height-header_default}px;
+    
+    > ul {
+      height:88px;
+      float:right;
+    }
+
+    > ul > li {
+      height:#{$height-header_default}px;
+      // line-height:#{$height-header_default}px;
+      text-transform: uppercase;
+      letter-spacing:1px;
+
+      &:last-child a {padding-right:0;}
+
+      > a {
+        display:block;
+        width:100%;height:100%;
+        line-height:88px;
+        padding-right:em(20px);
+        padding-left:em(4px);
+      }
+    }
+  }/* nav */
+
+}
+  
+  /* ------------------------------------------------ */
+  /* HEADER.DEFAULT -> TABLET
+  /* ------------------------------------------------ */
+  @include media(tablet) {
+
+  }
+  /* ------------------------------------------------ */
+  /* HEADER.DEFAULT -> MOBILE
+  /* ------------------------------------------------ */
+  @include media(mobile) {
+    
+  }
