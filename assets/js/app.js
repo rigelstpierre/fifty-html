@@ -15,7 +15,7 @@
         FF.setVars();
         FF.loadScripts();
         FF.scroll();
-        FF.modalEffects();
+        FF.modals();
         FF.fauxPlaceholders();
         FF.regex();
         FF.lazyLoadVideo();
@@ -146,7 +146,7 @@
 
     /* MODAL EFFECTS
     ================================================== */
-    FF.modalEffects = function() {
+    FF.modals = function() {
 
         // move all modals to the #modals bay
         FF.el.modal.appendTo('#modals');

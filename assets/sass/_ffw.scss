@@ -213,6 +213,24 @@
 }
 
 
+/* TABLE / TABLE CELL
+================================================== */
+// table
+@mixin table($text_align: center){
+  display:table;
+  text-align:$text_align;
+}
+  .table {@include table;}
+
+// table-cell  
+@mixin table-cell(){
+  display:table-cell;
+  vertical-align:middle;
+}
+  .table-cell {@include table-cell;}
+
+
+
 /* PSEUDO-ICON-FONT
 ================================================== */
 @mixin pseudo-icon(
@@ -233,3 +251,11 @@
   }
 }
 
+/* EMPTY-BUTTON
+================================================== */
+@mixin button-empty() {
+  @include appearance(none);
+  outline:0;
+  border:0;
+  background-color:transparent;
+}
