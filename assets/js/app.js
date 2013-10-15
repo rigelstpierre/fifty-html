@@ -13,7 +13,7 @@
     FF.init = function(){
         FF.setElements();
         FF.setVars();
-        FF.basics();
+        FF.loadScripts();
         FF.scroll();
         FF.modalEffects();
         FF.fauxPlaceholders();
@@ -40,15 +40,31 @@
     ================================================== */
     FF.setVars = function() {
         // jquery easing plugin init
-        jQuery.easing.def = "string";
+        // jQuery.easing.def = "string";
     }
     
 
-    /* BASICS
+    /* LOAD SCRIPTS
     ================================================== */
-    FF.basics = function(){
+    FF.loadScripts = function(){
 
+        function loadScript(url, callback) {
+            // Adding the script tag to the head as suggested before
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
 
+            // Then bind the event to the callback function.
+            // There are several events for cross browser compatibility.
+            script.onreadystatechange = callback;
+            script.onload = callback;
+
+            // Fire the loading
+            head.appendChild(script);
+        }
+
+        // loadScript('assets/js/vendor/skrollr.js', FF.skrollr);
     };
 
 
@@ -56,27 +72,35 @@
     ================================================== */
     FF.scroll = function(){
 
-        var duration        = 500,
-            easing          = 'swing',
-            scroll_offset   = 15;
-
-        // <a> method
-        $('a[href^="#"].scroll').click(function(e){
-            var $self = $(this);
-            var destination = $($self.attr('href'));
+        // <a> method manual
+        $('a.scroll, li.scroll > a').click(function(e){
             e.preventDefault();
-            // if destination is valid, scroll to
-            if(destination && destination.offset()){
-                if(/(iPhone|iPod)\sOS\s6/.test(navigator.userAgent)){
-                    $('html, body').animate({
-                        scrollTop: $(destination).offset().top
-                    }, duration, easing);
-                } else {
-                    $('html, body').animate({
-                        scrollTop: $(destination).offset().top - (scroll_offset)
-                    }, duration, easing);
+
+            var $this       = $(this),
+                target_id   = $this.attr('href'),
+                target      = $(target_id),
+                duration    = (Math.abs($(window).scrollTop() - $(target).offset().top) / 2.5 );
+                // duration    = 650;
+
+            animate_scrollTop(target, duration, 'easeInOutExpo', 0);
+
+            console.log(duration);
+
+            // animate_scrollTop();
+            function animate_scrollTop(target, duration, easing, offset){
+                if(target){
+                    if(/(iPhone|iPod)\sOS\s6/.test(navigator.userAgent)){
+                        $('html, body').animate({
+                            scrollTop: target.offset().top
+                        }, duration, easing);
+                    } else {
+                        $('html, body').animate({
+                            scrollTop: target.offset().top - (offset)
+                        }, duration, easing);
+                    }
                 }
             }
+
         });
     };
     
@@ -124,80 +148,52 @@
     ================================================== */
     FF.modalEffects = function() {
 
-        var overlay = $('.md-overlay');
+        // move all modals to the #modals bay
+        FF.el.modal.appendTo('#modals');
 
-        if (!overlay) { return; }
+        // append the modal overlay to the body
+        $('body').append('<div class="modal-overlay"></div>');
+        var $modal_overlay = $('.modal-overlay');
+        
+        // set the width/height to the body w/h
+        $modal_overlay.width($('body').width()).height($('body').height());
 
-        [].slice.call( $('.md-trigger') ).forEach( function(el, i) {
+        // modal trigger click function
+        $('.modal-trigger, [role="modal-trigger"]').click(function(e) {
+            e.preventDefault();
 
-            var modal_id = $(el).attr('href'),
-              modal = $( modal_id ),
-              close = modal.find('.md-close');
+            // set relative vars
+            var modal_id        = $(this).data('id'),
+                modal_target    = $(modal_id);
 
-            // remove modal
-            function removeModal(hasPerspective) {
-              modal.removeClass('md-show');
+            // set modal negative top margin
+            modal_target.css('margin-top', '-'+(modal_target.height() / 2)+'px');
 
-              if ( hasPerspective ) {
-                  document.documentElement.removeClass('md-perspective');
-              }
+            // modal show func
+            function modal_show() {
+                $modal_overlay.addClass('show');
+                setTimeout(function(){
+                    modal_target.addClass('show');
+                }, 250)
+            } modal_show();
+
+            // modal hide func
+            function modal_close() {
+                modal_target.removeClass('show');
+                setTimeout(function(){
+                    $modal_overlay.removeClass('show');
+                }, 150)
             }
 
-            // remove handler
-            function removeModalHandler() {
-              removeModal( $(el).hasClass('md-setperspective') );
-              overlay.removeClass('md-show');
-
-              return false;
-            }
-
-            // scroll to top of modal on click
-            function scrollModalOffset(id) {
-
-                var md_id       = $(el).attr('href'),
-                    md          = $( md_id ),
-                    md_offset   = md.offset().top;
-
-                    // console.log(md_id);
-
-                    if(md && md.offset() && (md_id === '#MODAL_ID_1' || md_id === '#MODAL_ID_2') ){
-                        if(/(iPhone|iPod)\sOS\s6/.test(navigator.userAgent)){
-                            $('html, body').animate({
-                                scrollTop: md.offset().top - 30
-                            }, 250, 'swing');
-                        } else {
-                            $('html, body').animate({
-                                scrollTop: md.offset().top - 30
-                            }, 250, 'swing');
-                        }
-                    }
-            }
-
-            // open modal
-            el.addEventListener( 'click', function( ev ) {
-
-                ev.preventDefault();
-
-                modal.addClass('md-show');
-                overlay.addClass('md-show');
-                overlay.unbind( 'click', removeModalHandler );
-                overlay.bind( 'click', removeModalHandler );
-
-                if( $(el).hasClass('md-setperspective') ) {
-                    setTimeout( function() {
-                        document.documentElement.addClass('md-perspective');
-                    }, 25 );
-                }
-
-                scrollModalOffset();
-
+            // esc keyup
+            $(document).keyup(function(event) { 
+                if (event.keyCode == 27) { modal_close(); } 
             });
+            // close button
+            FF.el.modal_close.click(function() { modal_close(); });
+            // click anywhere on overlay
+            $modal_overlay.click(function() { modal_close(); })
 
-            // close modal
-            close.click(function(ev){
-                ev.stopPropagation();
-                removeModalHandler();
-            })
         });    
     };
 
