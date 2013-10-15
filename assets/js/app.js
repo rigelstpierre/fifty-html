@@ -33,6 +33,8 @@
         FF.el.page_wrap             = $('.page-wrap');
         FF.el.mobile_menu_btn       = $('#mobile-menu-toggle');
         FF.el.debug_box             = $('#debug_box');
+        FF.el.modal                 = $('.modal');
+        FF.el.modal_close           = $('.modal-close');
     };
 
 
