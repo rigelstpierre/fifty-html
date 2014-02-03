@@ -1,28 +1,33 @@
 !(function ($){
 
-    "use strict"; // jsHint
+    // "use strict"; // jsHint
 
     window.FIFTYFRAMEWORK = {};
     
-    var FF      = window.FIFTYFRAMEWORK;
-    var iOS     = ( navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
-    var DEBUG   = false;
+    var FF          = window.FIFTYFRAMEWORK;
+    var iOS         = ( navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
+    var MOBILE_ALL  = ((/Mobile|Android|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
+    var MOBILE      = ((/Mobile|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
+    var DEBUG       = false;
 
     /* INITIATE FUNCTIONS
     ================================================== */
     FF.init = function(){
         FF.setElements();
         FF.setVars();
-        FF.loadScripts();
+        FF.basics();
         FF.scroll();
-        FF.modals();
         FF.fauxPlaceholders();
         FF.regex();
         FF.lazyLoadVideo();
+        FF.modals();
         FF.collapsableSidebar();
+        FF.fitVids();
         FF.backStretch();
         FF.debugBox();
         FF.hamburgerNav();
+        FF.codeMirror();
+        FF.sticky();
     };
 
     /* SET ELEMENTS
@@ -34,7 +39,7 @@
         FF.el.mobile_menu_btn       = $('#mobile-menu-toggle');
         FF.el.debug_box             = $('#debug_box');
         FF.el.modal                 = $('.modal');
-        FF.el.modal_close           = $('.modal-close');
+        FF.el.modal_close           = $('.modal button.modal-close');
     };
 
 
@@ -46,27 +51,11 @@
     }
     
 
-    /* LOAD SCRIPTS
+    /* BASICS
     ================================================== */
-    FF.loadScripts = function(){
+    FF.basics = function(){
 
-        function loadScript(url, callback) {
-            // Adding the script tag to the head as suggested before
-            var head = document.getElementsByTagName('head')[0];
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = url;
 
-            // Then bind the event to the callback function.
-            // There are several events for cross browser compatibility.
-            script.onreadystatechange = callback;
-            script.onload = callback;
-
-            // Fire the loading
-            head.appendChild(script);
-        }
-
-        // loadScript('assets/js/vendor/skrollr.js', FF.skrollr);
     };
 
 
@@ -81,12 +70,12 @@
             var $this       = $(this),
                 target_id   = $this.attr('href'),
                 target      = $(target_id),
-                duration    = (Math.abs($(window).scrollTop() - $(target).offset().top) / 2.5 );
-                // duration    = 650;
+                // duration    = (target.offset().top - $(window).scrollTop());
+                duration    = 650;
 
             animate_scrollTop(target, duration, 'easeInOutExpo', 0);
 
-            console.log(duration);
+            // console.log(duration);
 
             // animate_scrollTop();
             function animate_scrollTop(target, duration, easing, offset){
@@ -146,7 +135,7 @@
     };
 
 
-    /* MODAL EFFECTS
+    /* MODALS (Magnific Popup)
     ================================================== */
     FF.modals = function() {
 
@@ -196,7 +185,8 @@
             // click anywhere on overlay
             $modal_overlay.click(function() { modal_close(); })
 
-        });    
+        });
+
     };
 
 
@@ -276,6 +266,14 @@
     }
 
 
+    /* FITVIDS
+    ================================================== */
+    FF.fitVids = function() {
+
+        $('.slide-content, section').fitVids();
+    }
+
+
     /* LAZYLOAD VIDEO
     ================================================== */
     FF.lazyLoadVideo = function() {
@@ -287,7 +285,7 @@
                 width           = $this.width(),
                 height          = $this.height();
 
-                console.log(width, height);
+                // console.log(width, height);
 
             // embed code builder function
             function buildEmbed(service, id) {
@@ -305,11 +303,19 @@
             var embed_code = buildEmbed(video_service, video_id);
 
             // remove inner elements
+            $this.find('iframe').remove();
             $this.find('img').remove();
+            $this.find('.media-image-overlay').css('opacity', 0);
+            $this.find('.media-image-icon').hide();
+            $this.css('background-image', '');
             $this.find('.post-format-video-overlay').remove();
 
             // append the generated embed code
-            $this.append(embed_code);
+            if ( $this.find('iframe').length <= 0 ) {
+                $this.append(embed_code);
+            } else {
+                // nothing
+            }
         });
     }
 
@@ -359,6 +365,67 @@
     }
 
 
+    /* CODE MIRROR
+    ================================================== */
+    FF.codeMirror = function() {
+        $('.prettify').each(function() {
+            
+
+            // set vars
+            var $this = $(this),
+                $code = $this.html(),
+                $unescaped = $('<div/>').html($code).text();
+
+            // classes as args
+            var c_mode    = $this.data('mode'),
+                c_theme   = $this.data('theme');
+
+            if (!c_mode) c_mode = 'xml';
+            if (!c_theme) c_theme = 'monokai';
+           
+            $this.empty();
+
+            var mixedMode = {
+                name: "htmlmixed",
+                scriptTypes: [
+                {
+                    matches: /\/x-handlebars-template|\/x-mustache/i,
+                    mode: null
+                },
+                {
+                    matches: /(text|application)\/(x-)?vb(a|script)/i,
+                    mode: "vbscript"
+                }]
+            };
+
+            CodeMirror(this, {
+                value: $code,
+                height: "150px",
+                mode: c_mode,
+                theme: c_theme,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                lineNumbers: !$this.is('.inline'),
+                readOnly: true,
+            });
+
+        });
+    }
+
+
+    /* STICKY
+    ================================================== */
+    FF.sticky = function() {
+        $('.sticky').each(function() {
+            
+            // vars
+            var $this   = $(this),
+                offset  = $this.data('offset');
+
+
+            $this.sticky({topSpacing:offset});
+        });
+    }
+
     /* DEBUG_BOX
     ================================================== */
     FF.debugBox = function(start) {
@@ -391,6 +458,35 @@
     }
 
 
+    /* MATCH MEDIA
+    ================================================== */
+    FF.matchMedia = function( element ) {
+
+        // Find matches
+        var mql = window.matchMedia("(orientation: portrait)");
+
+        // If there are matches, we're in portrait, else we're landscape
+        if(mql.matches) {  
+            // Portrait orientation
+
+        } else {  
+            // Landscape orientation
+        }
+
+        // Add a media query change listener
+        mql.addListener(function (m) {
+
+            if(m.matches) {
+                // Changed to portrait
+            }
+            else {
+                // Changed to landscape
+            }
+        });
+    }
+
+
+
     /* ================================================================ */
     /*                                                                  */
     /*                     DOCUMENT / WINDOW CALLS                      */
@@ -405,7 +501,7 @@
         
         // do stuff on document ready
         FF.init();
-
+        FF.matchMedia();
 
     });
 
@@ -437,7 +533,26 @@
         // do stuff on window resize
 
 
-    }).trigger('resize');   
+    }).trigger('resize');
+
+
+
+    /* ORIENTATION CHANGE (requires jQuery mobile)
+    ================================================== */
+    window.addEventListener("orientationchange", function() {
+        // Announce the new orientation number
+        
+        console.log('Orientation is: ', window.orientation);
+
+    }, false);
+
+        // Some devices dont have this event but instead listen for resize event
+        window.addEventListener("resize", function() {
+            // Get screen size (inner/outerWidth, inner/outerHeight)
+            
+        }, false);
+
+
 
 
     /* SELF INVOKING ANONYMOUS FUNCTION(s)
@@ -461,6 +576,15 @@
     })();
 
 })(jQuery);
+
+
+// viewport width check
+function viewport_mobile() {
+    // it is mobie sized viewport (landscape)
+    if ( $(window).width() <= 480 ) { return true; } 
+    // not mobile viewport (greater than -> tablet or desktop)
+    else if ( $(window).width() > 480 ) { return false; }
+}
 
 // Viewport selectors - URL: http://www.appelsiini.net/projects/viewport
 (function($){$.belowthefold=function(element,settings){var fold=$(window).height()+$(window).scrollTop();return fold<=$(element).offset().top-settings.threshold;};$.abovethetop=function(element,settings){var top=$(window).scrollTop();return top>=$(element).offset().top+$(element).height()-settings.threshold;};$.rightofscreen=function(element,settings){var fold=$(window).width()+$(window).scrollLeft();return fold<=$(element).offset().left-settings.threshold;};$.leftofscreen=function(element,settings){var left=$(window).scrollLeft();return left>=$(element).offset().left+$(element).width()-settings.threshold;};$.inviewport=function(element,settings){return!$.rightofscreen(element,settings)&&!$.leftofscreen(element,settings)&&!$.belowthefold(element,settings)&&!$.abovethetop(element,settings);};$.extend($.expr[':'],{"below-the-fold":function(a,i,m){return $.belowthefold(a,{threshold:0});},"above-the-top":function(a,i,m){return $.abovethetop(a,{threshold:0});},"left-of-screen":function(a,i,m){return $.leftofscreen(a,{threshold:0});},"right-of-screen":function(a,i,m){return $.rightofscreen(a,{threshold:0});},"in-viewport":function(a,i,m){return $.inviewport(a,{threshold:0});}});})(jQuery);

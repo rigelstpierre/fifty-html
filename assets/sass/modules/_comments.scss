@@ -1,0 +1,216 @@
+/* _comments.scss */
+
+
+
+/* RESPOND
+================================================== */
+#respond {
+  width:100%;height:auto;
+  @include clearfix;
+  margin-top:40px;
+  border-top:1px solid #ddd;
+  padding-top:40px;
+
+  #reply-title { display:none; }
+
+  form#commentform {
+
+    label {display:block;}
+
+    input[type="text"],textarea {
+      // font-size:1em;
+      @extend %font-serif_italic;
+    }
+
+    textarea { height:100px; }
+
+    p { margin:0 0 .7em 0;padding:0; }
+
+    .comment-notes {display:none;}
+    
+    .comment-form-comment {
+      width:100%;
+      textarea {width:100%;}
+    }
+    
+    .fields-halves {
+      width:100%;height:auto;
+      @include clearfix;
+      
+      .field-half {
+        width:50%;
+        float:left;
+
+        &:first-of-type {padding-right:15px;}
+
+        input {width:100%;}
+      }  
+    }
+      .comment-form-author {}
+      .comment-form-email {}
+      .comment-form-url {}
+
+    .form-allowed-tags {}
+
+    .form-submit {
+      margin-bottom:0;
+      input#submit {
+
+      }
+    }
+  }
+
+}
+
+
+/* COMMENTS / COMMENTLIST
+================================================== */
+#comments {
+  width:100%;height:auto;
+  margin-top:40px;
+  border-top:1px solid #ddd;
+  padding-top:30px;
+  @include clearfix;
+
+  ol.commentlist {
+    list-style-type:none;
+    list-style:none;
+
+    @include ul-blank;
+
+    li.comment {
+      margin-top:30px;
+      font-style:normal;
+      font-size:100%;
+      font-size:initial;
+
+      p {font-size:inherit;font-style:inherit;}
+    }
+    >li.comment {
+     margin-top:0; 
+    }
+
+    li.comment.depth-1 {
+      margin-bottom:30px;
+      border-bottom:1px solid #ddd;
+      padding-bottom:30px;
+    }
+
+  }
+}
+
+
+
+
+/* ARTICLE .comment
+================================================== */
+.comment-wrap {
+
+  .comment-inner {
+    width:100%;height:auto;
+    @include display-box;
+    @include box-orient(horizontal);
+    @include box-align(stretch);
+    @include box-direction(normal);
+    @include clearfix;
+  }
+
+  /* AVATAR */
+  .avatar-wrap {
+    // @include box-flex(1);
+    // width:86px;
+
+    .avatar, .avatar img {
+      width:64px;height:64px;
+      @include border-radius(32px);
+      @include background-clip(padding-box);
+    }
+
+    img {
+      border: 1px solid #dadada;
+    }
+  }
+
+  /* COMMENT  */
+  .comment-comment {
+    @include box-flex(4);
+    padding-left:20px;
+
+    // HEADER
+    ////////////////////////
+    .comment-header {
+      width:100%;
+      @include clearfix;
+      margin-bottom:.5em;
+      
+      // wrap (meta header)
+      .comment-meta-header {
+        @include inline-block;
+        line-height:1;
+      }
+        // author
+        .comment-author {
+          @include inline-block;
+          @extend %font-extrabold;
+          line-height:inherit;
+          font-style:normal;
+          text-transform: uppercase;
+          color:$colorSecondaryDark;
+          
+          cite {font-style:normal;}
+          a {color:inherit;}
+        }
+        // time
+        .comment-time {
+          @include inline-block;
+          @extend %font-serif_italic;
+          padding-left:10px;
+          font-size:em(14px);
+          line-height:inherit;
+        }
+
+
+      // reply
+      .comment-reply-link {
+        float:right;
+        @extend %font-serif_italic;
+
+        &:hover {text-decoration: underline;}
+      }
+    }
+
+    // CONTENT
+    ////////////////////////
+    .comment-content {
+      color:$colorTextDefault;
+      @extend %font-serif_italic;
+
+      p {
+        font-size:em(14px);
+        &:first-of-type {margin-top:0;}
+      }
+    }
+    
+
+    // FOOTER
+    ////////////////////////
+    .comment-meta {
+
+      // time
+      .comment-meta-time {
+
+      }
+    }
+
+  }
+}/* comment */
+
+  /* CHILDREN (child comments)
+  ================================================== */
+  ol.children {
+    display:block;
+    list-style:none;
+    list-style-type:none;
+    padding-left:86px;
+
+  }

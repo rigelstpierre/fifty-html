@@ -1,19 +1,5 @@
 /* _grid.scss */
 
-/* Grid Settings
-================================================== */
-    $widecreen              : 1140px;
-    $desktop                : 960px;
-    $tablet                 : 768px;
-    $mobile-portrait        : 320px;
-    $mobile-landscape       : 480px;
-
-    $columns                : 12;
-    $margin                 : 10px;
-    $padding                : 10px;
-
-    $responsive             : true;
-    $from-direction         : left;
 
 /* Grid Mixins/Classes/Media Queries
 ================================================== */
@@ -34,64 +20,104 @@
   @return ($num * ($width / $num-columns)) - (2 * $margin); 
 }
 
-@mixin container {
-    position: relative;
-    margin: 0 auto;
-    padding: 0 $margin;
-    max-width: $desktop;
-  
-    // CLEARFIX 
-    &:after { content: "\0020"; display: block; height: 0; clear: both; visibility: hidden; }
-
-    // MEDIA QUERIES
-    @if $responsive == true {
-
-        @media only screen and (min-width: 768px) and (max-width: 959px) {
-          max-width: $tablet; padding:0 10px; 
-        }
-
-        @media only screen and (max-width: 767px) {
-          max-width: $mobile-portrait; 
-        }
-
-        @media only screen and (min-width: 480px) and (max-width: 767px) {
-          max-width: $mobile-landscape; 
-        } 
-    }
-}
-
-@mixin omega(){ float:right; }
-  
-
+/* MEDIA
+================================================== */
 @mixin media($type) {
   
+  // MQ {max-width} vars
+  $widescreen_max        : #{$widescreen - 1}px;
+  $desktop_max           : #{$desktop - 1}px;
+  $tablet_max            : #{$tablet - 1}px;
+  $mobile_landscape_max  : #{$mobile-landscape - 1}px;
+  $mobile_portrait_max   : #{$mobile-portrait - 1}px;
+  $mobile_max            : #{$mobile - 1}px;
+  // MQ {min-width} vars
+  $widescreen_min        : #{$widescreen}px;
+  $desktop_min           : #{$desktop}px;
+  $tablet_min            : #{$tablet}px;
+  $mobile_landscape_min  : #{$mobile-landscape}px;
+  $mobile_portrait_min   : #{$mobile-portrait}px;
+  $mobile_min            : #{$mobile}px;
+
+
+  // MQ -> Widescreen (UNUSED)
+  // @if $type == widescreen {
+  //   @media only screen and ( min-width: $widescreen_min ) { @content; }
+  // }
+  // MQ -> Desktop
   @if $type == desktop {
-      @media only screen and (min-width:59em) {
-          @content; 
-      }
+    @media only screen and ( min-width: $desktop_min ) { @content; }
   }
+  // MQ -> Tablet
   @else if $type == tablet {
-      @media only screen and (min-width:49em) and (max-width:59em) {
-          @content; 
-      }
+    @media only screen and ( min-width: $tablet_min ) and ( max-width: $desktop_max ) { @content; }
   }
+  // MQ -> Mobile
   @else if $type == mobile {
-      @media only screen and (max-width: 49em) {
-          @content;
-      }
+    @media only screen and ( max-width: $tablet_max ) { @content; }
   }
-  @else if $type == mobile-landscape {
-      @media only screen and (min-width:19em) and (max-width:29em) {
-          @content;
-      }
+  // MQ -> Mobile Landscape
+  @else if $type == mobile_landscape {
+    @media only screen and ( min-width: $mobile_landscape_min ) and ( max-width: $tablet_max ) { @content; }
   }
+
+
 
 }
 
+/* CONTAINER
+================================================== */
+@mixin container {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 $margin;
+  max-width: #{$desktop}px;
 
-.container {
-  @include container;
+  // CLEARFIX 
+  &:after { content: "\0020"; display: block; height: 0; clear: both; visibility: hidden; }
+
+  // MEDIA QUERIES
+  @if $responsive == true {
+
+    // @include media(widescreen)           { max-width: #{$widescreen}px; padding:0 10px; }
+    // @include media(desktop)           { max-width: #{$desktop}px; padding:0 10px; }
+    @include media(tablet)            { max-width: #{$tablet}px; padding:0 10px; }
+    @include media(mobile)            { max-width: #{$mobile}px; }
+    @include media(mobile_landsacpe)  { max-width: #{$mobile-portrait}px; }
+
+  }
 }
+  // CLASSES
+  .container { @include container; }
+
+
+/* OMEGA
+================================================== */
+@mixin omega(
+  $from     : $from-direction
+) {
+  $from   : unquote($from);
+  $to     : opposite-position($from);
+  $hack   : opposite-position(right);
+
+  float: right;
+  margin-#{$to}: 0;
+}
+
+
+/* PREFIX/SUFFIX PADDING (left/right)
+================================================== */
+@mixin pad( $position, $value:0) {
+  padding-#{$position}: $value;
+}
+
+
+/* SPAN PADDING CLASSES
+================================================== */
+
+.pad-sides-small  {padding:0 10px;}
+.pad-sides-medium {padding:0 15px;}
+.pad-sides-large  {padding:0 30px;}
 
 
 /* SPANS (1-12)
@@ -162,6 +188,12 @@
   @include media(mobile) { width:100%; }
 }
 
+  // span-centered
+  .span-center {
+    float:none !important;
+    margin:0 auto;
+  }
+
 /* ROW
 ================================================== */
 .row {
@@ -190,14 +222,23 @@
   border-right:1px solid transparent;
   border-bottom:1px solid transparent;
   overflow:hidden;
+
+  @include media(mobile) {margin-bottom:em(10px);}
   
   // INNER
   .box-inner {
     position:relative;
     width:100%;
     height:100%;
+    // BACKGROUND COVER
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    @include background-size(cover);
   }
-  &.has_footer .box-inner {height:75%;}
+  &.has_footer {
+
+    .box-inner {height:75%;}
+  }
     
   // IMAGE
   .box-image {
@@ -214,7 +255,7 @@
       text-align:center;
     }
   }
-
+ 
   // HOVER OVERLAY
   .box-hover-overlay {
     position:absolute;top:0;left:0;
@@ -249,7 +290,7 @@
     text-align:center;
     padding:25px 20px;
 
-    h1,h2,h3,h4,h5 {
+    h1,h2,h3,h4,h5,h6 {
       @include transition(all 100ms ease-in-out);
       margin:0;padding:0;line-height:1.4;text-transform:uppercase;font-weight:bold;color:$colorTextDefault;
     }
@@ -279,7 +320,7 @@
       footer {
         @include xbc-transparent-bg(0.90, #2f7499, 47, 116, 153);
 
-        h1,h2,h3,h4,h5 {color:#fff;}
+        h1,h2,h3,h4,h5,h6 {color:#fff;}
         span, em {color:#b2c7d4;}
       }
     }
@@ -366,7 +407,7 @@
 /* BOXES
 ================================================== */
 .bg-cover {
-  background-repeat:none;
+  background-repeat:no-repeat;
   background-position:50% 50%;
   -webkit-background-size: cover;
   -moz-background-size: cover;

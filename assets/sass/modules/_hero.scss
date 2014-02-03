@@ -1,18 +1,37 @@
 /* _hero.scss */
 
+/* HERO
+================================================== */
 #hero {
-  background-color:#4a4a4a;
-  color:#fafafa;
+  width:100%;height:450px;
+  background-color:$colorSecondaryDark;
+  @include background-size(cover);
+  background-repeat:no-repeat;
+  // background-position:0 0;
+  background-position: 50% 50%;
 
-  &.default {height:340px;}
+
+  // HERO-YOUTUBE - hack to remove black borders
+  &.hero-youtube {
+    background-position:-20%;
+  }
   
+  .hero-overlay {
+
+  }
   .container {
-    height:340px;
+    position:relative;
     display:table;
     text-align:center;
+    height:450px;
   }
   .hero-inner {
     display:table-cell;
     vertical-align:middle;
+    width:100%;height:auto;
+  }
+
+  h1 {
+    color:#ffffff;
   }
 }

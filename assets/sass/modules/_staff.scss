@@ -1,0 +1,44 @@
+/* _staff.scss */
+
+
+/* SECTION#STAFF
+================================================== */
+
+// .box-third/fourth/etc depending on section_width set in ACF
+.staff-photo {
+  position:relative;
+  padding-right:1%;
+  padding-bottom:1%;
+  overflow:hidden;
+
+  &:hover {
+    .staff-photo-overlay {
+      visibility:visible;
+      @include transparent-bg(#000000, 0.55);  
+    }
+  }
+
+  .staff-photo-overlay {
+    display:table;
+    position:absolute;top:0;left:0;
+    width:101%;height:101%;
+    /* TRANSITION */
+    visibility:hidden;
+    background-color:transparent;
+    @include transition(all 150ms ease-in-out);
+    z-index:100;
+
+    .staff-photo-overlay-inner {
+      display:table-cell;
+      vertical-align:middle;
+      text-align:center;
+    }
+  }
+
+  // inherits .bg-cover
+  .staff-photo-thumb {
+    position:relative;
+    width:100%;height:100%;
+  }
+
+}

@@ -2,10 +2,12 @@
  
 /* SASS Libraries */
 @import "compass",
-        "ffw";
+        "ffw"; 
 
-/* Reset */
-@import "vendor/normalize"; 
+/* Reset & Vendor Libs */
+@import "vendor/reset",
+        "vendor/codemirror",
+        "vendor/addthis";
 
 /* Base & Vars */
 @import "config",
@@ -15,21 +17,30 @@
         "core/fonts",
         "core/body";
 
-/* Libraries */
-@import "lib/functions",
-        "lib/extenders",
-        "lib/helpers", 
+/* Librarires */
+@import "lib/extenders",
+        "lib/helpers",
         "lib/forms",
         "lib/social",
         "lib/icons",
         "lib/buttons",
         "lib/shapes",
-        "lib/modals",
-        "lib/animate";
+        "lib/animate",
+        "lib/code",
+        "lib/modals";
 
-/* Modules & Components */ 
+/* Modules & Components */
 @import "modules/header",
         "modules/navigation",
         "modules/hero",
+        "modules/footer",
+        "modules/slider",
+        "modules/widgets",
+        "modules/comments",
         "modules/content-shared",
-        "modules/footer";
+        "modules/content-posts";
+
+/* Optional Post-Type Styles */
+@import "modules/staff";
+@import "modules/portfolio";
+@import "modules/media";

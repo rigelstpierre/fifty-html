@@ -16,6 +16,7 @@
   %font-serif         {font-family:$serif,Georgia,serif;}
   %font-serif_italic  {font-family:$serif,Georgia,serif;font-style:italic;}
   %font-pictos        {font-family:$pictos;}
+  %font-fa            {font-family:$fa;}
   %font-socialico     {font-family:$socialico;}
   %font-arrrows       {font-family:$arrrows;}
 
@@ -98,7 +99,15 @@
   @include clearfix;
 }
   .third, %third {
-    width: 33.33333333333333%;float:left;
+    width: 33.33333333333333%;
+    float:left;
+
+    @include media(mobile) {
+      float:none;
+      width:100%;
+      margin-bottom:em(20px);
+      padding-right:0;
+    }
   }
 
 
@@ -154,3 +163,16 @@
 %z-highest    {z-index:99999;}
 
 
+/* VISIBILITY
+================================================== */
+%visuallyhidden {
+  margin: -1px;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip: rect(0, 0, 0, 0);
+  position: absolute;
+}
+  .visually-hidden { @extend %visuallyhidden; }

@@ -1,0 +1,162 @@
+/* _widgets.scss */
+
+
+
+
+.widget-area {
+  font-size:initial;
+}
+  
+  .widget {
+    font-size:.9em;
+    margin-bottom:2em;
+
+    // &:first-of-type .widget-title {margin-top:10px;}
+    
+    .separator {
+      @include inline-block;
+      width:50%;
+      margin-top:2em;
+      border-bottom:1px solid #ddd;
+    }
+
+    .widget-title {
+      color:$colorSecondaryDark;
+      @extend %font-bold_caps;
+      font-size:inherit;
+    }
+
+    ul { @extend %font-serif_italic; }
+
+  }
+
+
+  /* AUTHOR INFO WIDGET
+  ================================================== */
+  .widget.author-info {
+    @include box-shadow(none);
+
+    .standard-pi-pic {
+      // text-align:right;
+      text-align:inherit;
+
+      a { 
+        @include inline-block; 
+        background-color: #f3f1f1;
+      }
+      img,a {
+        @include background-clip(padding-box);
+        @include border-radius(60px);
+        width:120px;height:120px;
+      }
+    }
+
+    .standard-pi-top-text {
+      @include inline-block;
+      margin:1.5em 0 0 0;
+      font-size:em(14px);
+      font-style:italic;
+    }
+
+    .standard-pi-author-name {
+      @extend %font-baseline;
+      @extend %font-bold_caps;
+      margin:.3em 0 0 0;
+      color:$colorSecondaryDark;
+      font-size:inherit;
+    }
+
+    .standard-pi-separator {
+      @include inline-block;
+      width:50%;
+      margin:.8em 0 .6em 0;
+      border-bottom:2px solid #353535;
+    }
+      
+    .standard-pi-bio {
+      margin:0;
+      padding:0;
+      @extend %font-serif_italic;
+    }
+    .separator {display:none;}
+  }
+
+
+
+
+  /* FOOTER-WIDGETS
+  ================================================== */
+  .footer-widgets {
+
+    &.halves {
+      @include clearfix;
+
+      .footer-widget {@extend %span6;}
+    }
+
+    &.thirds {
+      @include clearfix;
+
+      .footer-widget {@extend %span4;}
+    }
+
+    &.fourths {
+      @include clearfix;
+
+      .footer-widget {@extend %span3;}
+    }
+
+  }
+
+    /* FOOTER WIDGET
+    ================================================== */
+    .widget.footer-widget {
+      margin-bottom:0;
+
+      .widget-title {
+        margin-top:.5em;
+        font-size:em(20px);
+      }
+  
+      ul {
+        li {
+          width:75%;
+          border-bottom:1px solid #5a5a5a;
+
+          a {
+            padding:.8em .2em;
+            display:block;
+          }
+        }
+        a {
+          @extend %transition-all-fast;
+          &:hover {color:$colorAnchorDefault;}
+        }
+      }
+    
+      /* FOOTER-WIDGET > MENU-SOCIAL
+       * Needs overrides to reset styles from footer-widget
+      ===================================================== */
+      ul.menu-social {
+        li {
+          line-height:1;
+          width:auto;
+          border-bottom:0;
+          margin:0 5px 0 0;
+
+          a {padding:0;}
+        }
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+

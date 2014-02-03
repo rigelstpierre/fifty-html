@@ -268,39 +268,86 @@
   </div>
  */
 
-.btn, %btn {
-  @include btn(#2f7499, #ffffff, 17px, normal, transparent, none, auto, 20px 25px, 5px );
+/* MIXIN: _BTN
+================================================== */
+@mixin _btn($color) {
+  background-color:$color;
+  border:1px solid $color;
+
+  &:hover       {background-color:ffw_hover_darken($color);}
+  
+  &.transparent {
+    background-color:transparent;border:1px solid $color;color:$color;
+    &:hover {border-color:ffw_hover_lighten($color);color:#fff;background-color:lighten($color, 7);}
+  }
 }
 
+.btn, %btn {
+  line-height:1.2;
+  padding:15px 20px 13px 20px;
+  color:#fff;
+  margin-bottom:5px;
+  text-transform:uppercase;
+  @include inline-block;
+  @include border-radius(4px);
+  @include background-clip(padding-box);
+  // line-height:52px;
+  line-height:1.2;
+  @include transition(all 150ms linear);
+}
+
+.btn {
+
+
+  // large
+  &.large {
+    font-size:em(20px);
+    padding:10px 22px;
+    max-height:72px;
+  }
+  
+
+  // primary
+  &.primary    {@include _btn($colorPrimary);}
+  // secondary
+  &.secondary   {@include _btn($colorAnchorDefault);}
+  // tertiary
+  &.tertiary     {@include _btn($colorTertiary);}
+  // quaternary
+  &.quaternary  {@include _btn($colorQuaternary);}
+  // black
+  &.black   {@include _btn($colorPrimaryDark);}
+
+  // white
+  &.white   {
+    @include _btn(#ffffff);
+    color:$colorSecondary;
+    &.transparent {
+      &:hover {color:$colorSecondary;}
+    }
+  }
+
+  // ICON BUTTONS
+  &.icon {
+    &:before {
+      padding:0 em(10px) 0 0;font-size:em(20px);
+    }
+  }
+
+
+  /* BUTTON TABBED
+  ================================================== */
+  &.tab {
+    &:before {}
+  }
+}
 
 .btn-tab {
   @extend %btn;
 
   // PRIMARY (default)
-  @include btn-before-basics();
-  @include btn-before-font(25px, normal, #ffffff, "pictos");
-  @include xbc-transparent-bg(1.0, #2f7499, 47, 116, 153);
-
-  // PRIMARY (transparent)
-  &.transparent {
-    @include xbc-transparent-bg(0.10, #2f7499, 47, 116, 153);
-    color:#2f7499;
-    &:before {color:#2f7499;}
-  }
-
-  // SECONDARY
-  &.secondary {
-    color:#2f7499;
-    &:before {color:#2f7499;} 
-    @include xbc-transparent-bg(1.00, #ffffff, 255, 255, 255);
-  }
-
-  // SECONDARY (transparent)
-  &.secondary-transparent {
-    color:#ffffff;
-    &:before {color:#ffffff;} 
-    @include xbc-transparent-bg(0.10, #ffffff, 255, 255, 255);
-  }
+  // @include btn-before-basics();
+  // @include btn-before-font(25px, normal, #ffffff, "pictos");
 }
 
 // BUTTON TAG CLASSES

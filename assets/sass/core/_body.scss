@@ -3,6 +3,7 @@
 html {
   font-size: 100%; /* ~10px */ 
 }
+
 body { 
   font-family: $default, "proxima-nova", Helvetica, Arial, sans-serif;
   font-weight: normal;
@@ -17,8 +18,20 @@ body {
 
 a { color:$colorAnchorDefault; &:hover {} }
 
-* { box-sizing: border-box; }
+* { 
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box; /* ie8 only */
+          box-sizing: border-box;
+}
 
+h1,h2,h3,h4,h5,h6 {margin:0;padding-top:1rem;margin-bottom:1rem}
+h1 { font-size:em(68px); line-height:1.15; font-weight: 900; }
+h2 { font-size:em(36px); line-height:1.25; font-weight: 900; }
+h3 { font-size:em(24px); line-height:1.25; font-weight: 900; }
+h4 { font-size:em(24px); line-height:1.15; font-weight: normal; margin-top:0; }
+h5 { font-size:em(18px); line-height:1.25; font-family:$serif; font-style:italic; font-weight:normal; color:$colorSecondaryLight; margin-top:0;}
+h6 { font-size:em(14px); line-height:1.15; font-weight: 900; text-transform: uppercase; margin-top:0;}
 
 
 .menu-menu-1-container{

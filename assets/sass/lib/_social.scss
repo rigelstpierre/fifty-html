@@ -13,3 +13,33 @@
     a { @extend %font-baseline; }
   }
 }
+
+
+.social-link {
+
+  // CIRCLE (used in events landing)
+  ///////////////////////////////////
+  &.circle {
+    width:86px;height:86px;
+    @include border-radius(43px);
+    background-color:#fff;
+    text-align:center;
+    color:$colorSecondaryDark;
+    font-size:em(32px);
+  
+    // smal
+    &.small {
+      width:32px;height:32px;
+      font-size:em(22px);
+      
+      a:before {line-height:34px;}
+    }
+
+    &:before {
+      display: -moz-inline-stack;display: inline-block;zoom: 1;*display: inline;
+      // @include xbc-transparent-bg(0.50, #000); // DEBUG
+      line-height:90px;
+      text-align:center;
+    }
+  }
+}

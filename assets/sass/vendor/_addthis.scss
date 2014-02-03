@@ -1,0 +1,70 @@
+/* _addthis.scss */
+
+.ffw_addthis_custom_styles {
+  margin-top:15px;
+
+  // LABEL
+  span.addthis_label {
+    display:block;
+    float:left;
+    padding-right:15px;
+    line-height:34px;
+    font-weight:bold;
+    color:#fff;
+  }
+
+  // ALL (resets/defaults)
+  .addthis_button_twitter,
+  .addthis_button_facebook,
+  .addthis_button_email {
+    padding:0;
+    margin-right:10px;
+    @include transparent-bg(#ffffff, 0.05, 255,255,255);
+    @include border-radius(17px);
+    @include background-clip(padding-box);
+    /* TRANSITION */
+    @include transition(all 150ms linear);
+    color:#fff;
+
+    &:last-child {margin-right:0;}
+
+    &:hover {
+      @include transparent-bg(#ffffff, 0.35, 255,255,255);
+      >span:before {color:#2f7499;}
+    }
+
+    >span {
+      background:none;
+      position:relative;
+
+      &:before {
+        position:absolute;top:0;left:0;
+        width:100%;height:100%;
+        text-align:center;
+        font-family:"socialico";
+        font-size:em(22px);
+        color:#fff;
+        line-height:37px;
+      }
+
+      span {
+        display:none;
+      }
+    }
+  }
+
+  // TWITTER
+  .addthis_button_twitter {
+    >span:before {content:'L'}
+  }
+  // FACEBOOK
+  .addthis_button_facebook {
+    >span:before {content:'F'}
+  }
+  // EMAIL
+  .addthis_button_email {
+    >span:before {line-height:34px;font-size:em(18px);font-family:"pictos";content:'M';}
+  }
+
+
+}

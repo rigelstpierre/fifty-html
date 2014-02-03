@@ -1,51 +1,71 @@
-/* _variables.scss */
-
-
-/* GRID SETTINGS                    | **REQUIRED**
-================================================== */
-    $widecreen              : 1140px;
-    $desktop                : 960px;
-    $tablet                 : 768px;
-    $mobile-portrait        : 320px;
-    $mobile-landscape       : 480px;
-
-    $columns                : 12;
-    $margin                 : 10px;
-    $padding                : 10px;
-
-    $responsive             : true;
-    $from-direction         : left;
-
+/* _config.scss */
 
 
 /* COLORS                           | **REQUIRED**
 ================================================== */
 
+// BLACKS
 $colorPrimary:          #2a2a2a;
+$colorPrimaryWarm:      #3a3a3a;
 $colorPrimaryDark:      #1c1c1c;
 $colorPrimaryLight:     adjust_hue(saturate(darken(#2a2a2a, 13), 21), 0);
 
+//  GRAYS
 $colorSecondary:        #eae9e9;
 $colorSecondaryDark:    #363636;
 $colorSecondaryLight:   #7c7c7c;
 
+// LIGHT GRAY
 $colorTertiary:         #dddddd;
 $colorTertiaryDark:     #cccccc;
 $colorTertiaryLight:    #cccccc;
 
+// BLUE
+$colorQuaternary:       #2f7499;
+
+// TEXT / ANCHORS
 $colorTextDefault:      #433f3e;
 $colorTextLight:        #a3a3a3;
 $colorAnchorDefault:    #2f7499;
+
+// MORE GRAY
+$colorGrayPrimary:      #adadad;
+$colorGrayDarker:       #464646;
+
+
+/* GRID SETTINGS                    | **REQUIRED**
+================================================== */
+$widescreen             : 1140;
+$desktop                : 960;
+$tablet                 : 768;
+$mobile-landscape       : 480;
+$mobile-portrait        : 320;
+$mobile                 : $mobile-landscape;
+
+$columns                : 12;
+$margin                 : 10px;
+$padding                : 10px;
+
+$responsive             : true;
+$from-direction         : left;
+
+
+
+/* STYLE OPTIONS & TOGGLES        
+================================================== */
+$transparency-header:     false;
+
 
 
 
 /* FONTS                            | **REQUIRED**
 ================================================== */
-$default:       "opensans", Helvetica, Arial, sans-serif;
-$default-alt:   "opensans-condensed", "Helvetica Neue";
-$serif:         Georgia, serif;
-$pictos:        "pictos";
-$arrrows:       "arrrows";
-$social:        "socialico";
-$socialico:     "socialico";
+$default      :  "opensans", Helvetica, Arial, sans-serif;
+$default-alt  :  "opensans-condensed", "Helvetica Neue";
+$serif        :  Georgia, serif;
+$pictos       :  "pictos";
+$fa           :  "fontawesome";
+$arrrows      :  "arrrows";
+$social       :  "socialico";
+$socialico    :  "socialico";
 
