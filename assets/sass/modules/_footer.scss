@@ -1,41 +1,16 @@
-/* _footer.scss */
+// _footer.scss
 
 
-footer.default {
-  width:100%;height:auto;
-  min-height:120px;
-  // margin-top:3.5em;
-  background-color:$colorSecondaryDark;
-  color:#fafafa;
+#footer {
 
-  ul,h1,h2,h3,h4,p,span,a,li,.widget-title { color:inherit; }
+  
+  .nav-footer {
 
-  .footer-inner {
-    width:100%;height:auto;
-    padding:50px 0;
+  }
+  .menu-footer {
+  
   }
 
-  /* --------------------------------------------------- */
-  /* MORE STYLES IN _WIDGET.SCSS (.footer-widget)
-  /* --------------------------------------------------- */
-
 }
-footer.fifty{
-  width: 100%;
-  height: auto;
-  min-height: 30px;
-  background-color: #2F2F2F;
-  color: #737373;
-  padding: 15px 0;
-  font-size: .70em;
-  font-style: oblique;
-  text-align: right;
 
-  a{
-    color:#737373;
 
-    &:hover{
-      opacity:.8;
-    }
-  }
-}

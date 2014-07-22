@@ -1,67 +1,171 @@
 !(function ($){
 
-    // "use strict"; // jsHint
+    "use strict"; // jsHint
 
-    window.FIFTYFRAMEWORK = {};
-    
-    var FF          = window.FIFTYFRAMEWORK;
-    var iOS         = ( navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
-    var MOBILE_ALL  = ((/Mobile|Android|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
-    var MOBILE      = ((/Mobile|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
-    var DEBUG       = false;
+    window.THROWBACKSUMMER   = {};
+    var App                  = window.THROWBACKSUMMER;
+
+    // user-agent && user-agent helper methods
+    var ua                        = navigator.userAgent;
+    var regex_apple_webkit        = new RegExp(/AppleWebKit\/([\d.]+)/);
+    var result_apple_webkit_regex = regex_apple_webkit.exec(ua);
+    var apple_webkit_version      = (result_apple_webkit_regex === null ? null : parseFloat(regex_apple_webkit.exec(ua)[1]));
+
+    // global variables
+    var GLOBALS = {
+        // debug toggles
+        debug           : true,
+
+        // user-agents
+        user_agent : {
+          iOS         : (ua.match(/(iPad|iPhone|iPod)/g) ? true : false),
+          iphone      : (ua.match(/(iPhone|iPod)/g) ? true : false),
+          ipad        : (ua.match(/(iPad)/g) ? true : false),
+          android     : (ua.match(/(Android)/g) ? true : false),
+          mobile      : ((/Mobile|iPhone|iPod|BlackBerry|Windows Phone/i).test(ua || navigator.vendor || window.opera) ? true : false),
+          mobile_all  : ((/Mobile|Android|iPhone|iPod|BlackBerry|Windows Phone/i).test(ua || navigator.vendor || window.opera) ? true : false)
+        },
+
+        browser : {
+          // desktop_chrome   : (ua.indexOf('Android') <= -1 && ua.indexOf('iPhone') <= -1 && ua.indexOf('iPod') <= -1 && ua.indexOf('Mobile') <= -1 && ua.indexOf('Mozilla/5.0') > -1 && ua.indexOf('AppleWebKit') > -1 && ua.indexOf('Chrome') > -1),
+          desktop_chrome   : (window.chrome ? true : false),
+          iphone_chrome    : ((ua.match(/(iPod|iPhone|iPad)/) && ua.match(/AppleWebKit/) && ua.match('CriOS')) ? true : false),
+          iphone_safari    : ((ua.match(/(iPod|iPhone|iPad)/) && ua.match(/AppleWebKit/) && !ua.match('CriOS')) ? true : false),
+          android_native   : (ua.indexOf('Android') > -1 && ua.indexOf('Mozilla/5.0') > -1 && ua.indexOf('AppleWebKit') > -1 && ua.indexOf('Chrome') <= -1),
+          android_chrome   : (ua.indexOf('Android') > -1 && ua.indexOf('Mozilla/5.0') > -1 && ua.indexOf('AppleWebKit') > -1 && ua.indexOf('Chrome') > -1),
+          android_samsung  : (ua.indexOf('Android') > -1 && ua.indexOf('Mozilla/5.0') > -1 && ua.indexOf('AppleWebKit') > -1 && ua.indexOf('Chrome') > -1 && ua.indexOf('SCH') > -1)
+        }
+    }
+
 
     /* INITIATE FUNCTIONS
-    ================================================== */
-    FF.init = function(){
-        FF.setElements();
-        FF.setVars();
-        FF.basics();
-        FF.scroll();
-        FF.fauxPlaceholders();
-        FF.regex();
-        FF.lazyLoadVideo();
-        FF.modals();
-        FF.collapsableSidebar();
-        FF.fitVids();
-        FF.backStretch();
-        FF.debugBox();
-        FF.hamburgerNav();
-        FF.codeMirror();
-        FF.sticky();
+    ------------------------------------------------------------------------ */
+    App.init = function(){
+        App.setElements();
+        App.initScripts();
+        App.fixes();
+        App.userAgentDetection();
+        App.events();
+        App.scroll();
+        App.lazyLoadVideo();
+        App.lightbox();
+        App.modals();
+        App.animations();
+        App.sticky();
+        App.headroom();
+        App.hamburgerNav();
+        App.tooltip();
     };
 
     /* SET ELEMENTS
-    ================================================== */
-    FF.setElements = function(){
-        FF.el = {};
-        FF.el.page_overlay          = $('.page-overlay');
-        FF.el.page_wrap             = $('.page-wrap');
-        FF.el.mobile_menu_btn       = $('#mobile-menu-toggle');
-        FF.el.debug_box             = $('#debug_box');
-        FF.el.modal                 = $('.modal');
-        FF.el.modal_close           = $('.modal button.modal-close');
+    ------------------------------------------------------------------------ */
+    App.setElements = function(){
+        App.el = {
+            wrap                : $('#wrap'),
+            header              : $('#header'),
+            mobile_menu_btn     : $('#mobile-menu-toggle'),
+            mobile_nav_close    : $('#mobile-nav-close'),
+            mobile_nav          : $('#mobile-nav'),
+            tiles               : $('#tiles'),
+            modal               : $('.modal'),
+            modal_bay           : $('#modals'),
+            vote_btn            : $('.btn-vote-ajax')
+        };
     };
 
 
-    /* SET VARIABLES
-    ================================================== */
-    FF.setVars = function() {
-        // jquery easing plugin init
-        // jQuery.easing.def = "string";
+    /* PRE
+    ------------------------------------------------------------------------ */
+    App.initScripts = function(){
+
+        // WOW.js
+        if ( !window.WOW ) { 
+            return false; 
+        } else {
+            new WOW().init();
+        }
+
+
     }
-    
 
-    /* BASICS
-    ================================================== */
-    FF.basics = function(){
+
+
+    /* FIXES
+    ------------------------------------------------------------------------ */
+    App.fixes = function() {
+        // invisible font fix for chrome
+        if ( GLOBALS.browser.desktop_chrome ) {
+
+            var chrome_fix_2 = function() {
+                var orig_body_offset = $('body').offset();
+                $('body').offset(orig_body_offset);
+            }
+            // Invoke Method 2
+            chrome_fix_2();
+        }
+    };
+
+
+
+    
+    /* EVENTS
+    ------------------------------------------------------------------------ */
+    App.events = function(){
+
+        // Already voted
+        $('.voted').click(function (e) { 
+            e.preventDefault();
+
+            $(this).addClass('animated animated-500 shakeFast')
+            console.log('Youve already voted.');
+        });
+
+        // isotope filters
+        $('.isotope-filter').click(function (event) {
+            event.preventDefault();
+
+            var tiles       = $('#tiles'),
+                cat_filter  = $(this).data('filter');
+
+            $('#tiles').isotope({
+                filter : cat_filter
+            })
+        })
 
 
     };
+
+
+
+
+    /* USERAGENT
+    ------------------------------------------------------------------------ */
+    App.userAgentDetection = function(){
+
+        if ( GLOBALS.user_agent.mobile ) {
+            $('body').addClass('is_mobile');
+        } else {
+            $('body').addClass('non_mobile');
+        }
+
+    };
+
+
+
+    /* ANIMATIONS
+    ------------------------------------------------------------------------ */
+    App.animations = function() {
+
+        $('.bounceInUp')
+            .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+              $(this).toggleClass('animated bounceInUp');
+            });
+    }
 
 
     /* SCROLL (requires .scroll class on anchor)
-    ================================================== */
-    FF.scroll = function(){
+    ------------------------------------------------------------------------ */
+    App.scroll = function(){
 
         // <a> method manual
         $('a.scroll, li.scroll > a').click(function(e){
@@ -71,212 +175,108 @@
                 target_id   = $this.attr('href'),
                 target      = $(target_id),
                 // duration    = (target.offset().top - $(window).scrollTop());
-                duration    = 650;
+                duration    = 500;
 
-            animate_scrollTop(target, duration, 'easeInOutExpo', 0);
+            animate_scrollTop(target, duration, 'swing', 15);
 
             // console.log(duration);
 
-            // animate_scrollTop();
-            function animate_scrollTop(target, duration, easing, offset){
-                if(target){
-                    if(/(iPhone|iPod)\sOS\s6/.test(navigator.userAgent)){
-                        $('html, body').animate({
-                            scrollTop: target.offset().top
-                        }, duration, easing);
-                    } else {
-                        $('html, body').animate({
-                            scrollTop: target.offset().top - (offset)
-                        }, duration, easing);
-                    }
-                }
-            }
-
         });
     };
+
     
 
+    /* LIGHTBOX
+    ------------------------------------------------------------------------ */
+    App.lightbox = function() {
 
-    /* WP PLACEHOLDERS
-    ================================================== */
-    FF.fauxPlaceholders = function() {
+        var lightbox = $('#lightbox');
 
-        var comments_input      = $('#respond input[type="text"]'),
-            comments_textarea   = $('#respond textarea');
+        $('*[data-lightbox-bg-img]').click(function (e){
+            var img = $(this);
 
-        function labelAsPlaceholder(obj) {
-            //check if exists
-            if ( !obj.length ) { return; }
+            $('.page-overlay').addClass('show');
+            setTimeout(function() {
+                lightbox.addClass('show');
+            }, 299)
 
-            //input as obj
-            obj.each(function(){
-                var $this = $(this);
-                var input_label_text    = $this.siblings('label');
-                $this.attr('placeholder', input_label_text.text()); // placeholder method
-                input_label_text.hide();
-            });
-        }
-
-        function labelAsValue(obj) {
-            //check if exists
-            if ( !obj.length ) { return; }
-
-            //input as obj
-            obj.each(function(){
-                var $this = $(this);
-                var input_label_text    = $this.siblings('label');
-                $this.attr('value', input_label_text.text()); // value method
-                input_label_text.hide();
-            });
-        }
-
-        labelAsPlaceholder(comments_input);
-        labelAsPlaceholder(comments_textarea);
-    };
-
-
-    /* MODALS (Magnific Popup)
-    ================================================== */
-    FF.modals = function() {
-
-        // move all modals to the #modals bay
-        FF.el.modal.appendTo('#modals');
-
-        // append the modal overlay to the body
-        $('body').append('<div class="modal-overlay"></div>');
-        var $modal_overlay = $('.modal-overlay');
-        
-        // set the width/height to the body w/h
-        $modal_overlay.width($('body').width()).height($('body').height());
-
-        // modal trigger click function
-        $('.modal-trigger, [role="modal-trigger"]').click(function(e) {
-            e.preventDefault();
-
-            // set relative vars
-            var modal_id        = $(this).data('id'),
-                modal_target    = $(modal_id);
-
-            // set modal negative top margin
-            modal_target.css('margin-top', '-'+(modal_target.height() / 2)+'px');
-
-            // modal show func
-            function modal_show() {
-                $modal_overlay.addClass('show');
-                setTimeout(function(){
-                    modal_target.addClass('show');
-                }, 250)
-            } modal_show();
-
-            // modal hide func
-            function modal_close() {
-                modal_target.removeClass('show');
-                setTimeout(function(){
-                    $modal_overlay.removeClass('show');
-                }, 150)
-            }
-
-            // esc keyup
-            $(document).keyup(function(event) { 
-                if (event.keyCode == 27) { modal_close(); } 
-            });
-            // close button
-            FF.el.modal_close.click(function() { modal_close(); });
-            // click anywhere on overlay
-            $modal_overlay.click(function() { modal_close(); })
-
+            lightbox.empty();
+            lightbox.append('<img src="'+img.attr('data-img-src')+'">');
         });
-
-    };
-
-
-    /* FLEXLOADER
-    ================================================== */
-    FF.flexLoader = function(obj, options){
-
-        if ( !obj ) { return; }
-
-        obj.flexslider(options);
-
-    };
-
-
-    /* SKROLLER
-    ================================================== */
-    FF.skrollr = function(opts) {
-        var s = skrollr.init({
-          edgeStrategy: 'set',
-          easing: {
-            WTF: Math.random,
-            inverted: function(p) {
-              return 1-p;
-            }
-          }
-        });
-    };
-
-
-    /* REGEX
-    ================================================== */
-    FF.regex = function() {
-
-        function urlToLink(obj) {
-            var re = /(?:(?=[\s`!()\[\]{};:'".,<>?«»“”‘’])|\b)((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/|[a-z0-9.\-]+[.](?:com|org|net))(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))*(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]|\b))/gi;
-            obj.html(obj.html().replace(re, '<a href="$1" target="_blank" title="">$1</a>'));
-        }
-        // urlToLink($('#content article'));
-        
     }
 
 
-    /* COLLAPSABLE SIDEBAR
-    ================================================== */
-    FF.collapsableSidebar = function() {
 
-        var sidebar_default = $('#sidebar_default');
 
-        $('#sidebar-toggle').toggle(function(){
-            $('#sidebar-default').stop().animate({
-                'width'     : '5%'
-            }, function () {
-                $('#content').animate({
-                    'width'     : '92%'
-                });
-            });
-            $('.sidebar-inner').stop().animate({
-                'left'      : '-700px',
-                'opacity'   : '0'
-            }, 500);
+    /* MODALS
+    ------------------------------------------------------------------------ */
+    App.modals = function() {
+
+        var modals          = App.el.modal,
+            modal_bay       = App.el.modal_bay,
+            modal_trigger   = $('.modal-trigger'),
+            modal_close     = $('.modal-close');
             
-        }, function() {
-            $('#sidebar-default').animate({
-                'width'     : '25%'
-            }, function() {
-                
-            });
-            $('.sidebar-inner').stop().animate({
-                'left'      : '0px',
-                'opacity'   : '1'
-            });
-            $('#content').animate({
-                'width'     : '75%'
-            }, 350);
-        
+
+        // move all modals to modal bay
+        modals.appendTo(modal_bay);
+
+        modal_trigger.click(function (event) {
+            event.preventDefault();
+
+            var $this           = $(this),
+                modal_target    = $($this.attr('href')),
+                modal_cat_color = $('[data-cat-color]') ? $('[data-cat-color]').data('cat-color') : null;
+
+            // if trigger also has class of 'modal-trigger-auth' ( modal only needs to fire is user is logged out )
+            if ( $(this).hasClass('modal-trigger-auth') ) {
+                if ( App.current_user.is_logged_in ) {
+                    console.log('User is logged in so not firing modal');
+                } else {
+                    console.log('User is not logged in so firing auth modal');
+                    modalEffects(modal_target);
+                    $('input[name="cag_user_email"').focus();
+                }
+            } else {
+                modalEffects(modal_target);
+            }
+
+            function modalEffects(target) {
+
+                modal_bay.addClass('show');
+
+                App.el.wrap.addClass('blur');
+
+                target.addClass('show '+ modal_cat_color);
+
+                // close via button
+                modal_close.click(function() {
+                    // App.el.wrap.removeClass('blur');
+                    target.removeClass('show');
+                    modal_bay.removeClass('show');
+                });
+                // close via esc key
+                $(window).on('keydown', function (event) {
+
+                    if ( event.keyCode == 27) {
+                        // App.el.wrap.removeClass('blur');
+                        target.removeClass('show');
+                        modal_bay.removeClass('show');
+                    }
+                });
+            }
         });
+
     }
 
 
-    /* FITVIDS
-    ================================================== */
-    FF.fitVids = function() {
 
-        $('.slide-content, section').fitVids();
-    }
+
 
 
     /* LAZYLOAD VIDEO
-    ================================================== */
-    FF.lazyLoadVideo = function() {
+    ------------------------------------------------------------------------ */
+    App.lazyLoadVideo = function() {
 
         $('.lazyload').click(function(){
             var $this           = $(this),
@@ -321,216 +321,240 @@
 
 
     /* LAZYLOAD IMAGE - Run at window onload & scroll
-    ================================================== */
-    FF.lazyLoadImage = function(method) {
+    ------------------------------------------------------------------------ */
+    App.lazyLoadImage = function(method) {
+
+        if ( $('.lazyload').length <= 0 ) { return; }
 
         if ( method === 'delayed' ) {
             setTimeout(function(){
-                $('.lazyload-img:in-viewport').addClass('show');
+                $('.lazyload:in-viewport').addClass('show');
             }, 100);
         } else {
-            $('.lazyload-img:in-viewport').addClass('show');
+            $('.lazyload:in-viewport').addClass('show');
         }
     }
 
 
+    /* STICKY JS
+    ------------------------------------------------------------------------ */
+    App.sticky = function() {
 
-    /* BACKSTRETCH
-    ================================================== */
-    FF.backStretch = function() {
+        if ( $('.sticky').length > 0 ) {
+            $(window).scrollTop($(window).scrollTop()+1);
+        } else {
+            return false;
+        }
 
-        $('.backstretch').each(function(i){
-            var img_src = $(this).data('img-src');
+        $('.sticky').each(function (item) {
 
-            $(this).backstretch(img_src);
+            var offset = $(this).data('sticky-offset');
+
+            if ( offset != null || offset !== '' ) {
+                $(this).sticky({ topSpacing: offset });
+            } else {
+                $(this).sticky();
+            }
         });
     }
+
+
+    /* HEADROOM
+    ------------------------------------------------------------------------ */
+    App.headroom = function() {
+
+        // $('body.is_mobile #header').headroom({
+        //     tolerance : {
+        //         up : 5,
+        //         down : 25
+        //     },
+        // });
+    }
+
+    
 
 
     /* HAMBURGER NAV
-    ================================================== */
-    FF.hamburgerNav = function() {
+    ------------------------------------------------------------------------ */
+    App.hamburgerNav = function() {
 
-        FF.el.mobile_menu_btn.toggle(function(e){
-            $(this).addClass('open');
-            var nav = $(this).siblings('nav');
-            nav.slideToggle(150);
-
-        }, function(e){
-            $(this).removeClass('open');
-            var nav = $(this).siblings('nav');
-            nav.slideToggle(150);
-        });
-
-    }
-
-
-    /* CODE MIRROR
-    ================================================== */
-    FF.codeMirror = function() {
-        $('.prettify').each(function() {
+        App.el.mobile_menu_btn.on('touchend', function (e){
             
+            $(this).addClass('brown');
 
-            // set vars
-            var $this = $(this),
-                $code = $this.html(),
-                $unescaped = $('<div/>').html($code).text();
-
-            // classes as args
-            var c_mode    = $this.data('mode'),
-                c_theme   = $this.data('theme');
-
-            if (!c_mode) c_mode = 'xml';
-            if (!c_theme) c_theme = 'monokai';
-           
-            $this.empty();
-
-            var mixedMode = {
-                name: "htmlmixed",
-                scriptTypes: [
-                {
-                    matches: /\/x-handlebars-template|\/x-mustache/i,
-                    mode: null
-                },
-                {
-                    matches: /(text|application)\/(x-)?vb(a|script)/i,
-                    mode: "vbscript"
-                }]
-            };
-
-            CodeMirror(this, {
-                value: $code,
-                height: "150px",
-                mode: c_mode,
-                theme: c_theme,
-                extraKeys: {"Ctrl-Space": "autocomplete"},
-                lineNumbers: !$this.is('.inline'),
-                readOnly: true,
-            });
+            App.el.mobile_nav.addClass('show');
+            App.el.wrap.addClass('mobile-nav-show');
+            App.el.header.addClass('mobile-nav-show');
 
         });
+
+        App.el.mobile_nav_close.on('touchend', function (e) {
+
+            $(this).removeClass('brown');
+
+            App.el.mobile_nav.removeClass('show');
+            App.el.wrap.removeClass('mobile-nav-show');
+            App.el.header.removeClass('mobile-nav-show');
+
+        });
+
+        // App.el.mobile_nav.on('swipeleft', function (e) {
+
+        //     App.el.mobile_nav.removeClass('show');
+        //     App.el.wrap.removeClass('mobile-nav-show');
+
+        // });
+
     }
 
 
-    /* STICKY
-    ================================================== */
-    FF.sticky = function() {
-        $('.sticky').each(function() {
+
+    /* TOOLTIP
+    ------------------------------------------------------------------------ */
+    App.tooltip = function() {
+
+        $('.help-tooltip').hover(function (event) {
+
+            var $this           = $(this),
+                tooltip_text    = $this.data('tooltip');
+
+            // append el inside tooltip
+            $this.html('<div class="help-tooltip-content">'+tooltip_text+'</div>');
+
+
+        }, function (event) {
+            $(this).find('.help-tooltip-content').remove();
+        });
+
+    }
+
+
+
+    /* LOCATION HASH
+    ------------------------------------------------------------------------ */
+    App.locationHash = function(hash_string) {
+
+        if( window.location.hash ) {
+            var hash = window.location.hash.substring(1); 
             
-            // vars
-            var $this   = $(this),
-                offset  = $this.data('offset');
-
-
-            $this.sticky({topSpacing:offset});
-        });
-    }
-
-    /* DEBUG_BOX
-    ================================================== */
-    FF.debugBox = function(start) {
-
-        var debug_box_toggle = FF.el.debug_box.find('button#debug_box-close'),
-            debug_box_inner  = FF.el.debug_box.find('.debug_box-inner'),
-            debug_button     = FF.el.debug_box.find('nav a');
-
-        // toggle debug panel
-        debug_box_toggle.toggle(function() {
-            localStorage.setItem('FFW_debug_box_closed', true);
-            FF.el.debug_box.removeClass('closed');
-        }, function() {
-            localStorage.setItem('FFW_debug_box_closed', false);
-            FF.el.debug_box.addClass('closed');
-        });
-
-        // toggle individual vardumps/pretty prints
-        debug_button.toggle(function(){
-            var target = $(this).attr('name');
-
-            $('#'+target).removeClass('hide');
-            $(this).addClass('active');
-        }, function(){
-            var target = $(this).attr('name');
-
-            $('#'+target).addClass('hide');
-            $(this).removeClass('active');
-        });
-    }
-
-
-    /* MATCH MEDIA
-    ================================================== */
-    FF.matchMedia = function( element ) {
-
-        // Find matches
-        var mql = window.matchMedia("(orientation: portrait)");
-
-        // If there are matches, we're in portrait, else we're landscape
-        if(mql.matches) {  
-            // Portrait orientation
-
-        } else {  
-            // Landscape orientation
+            if ( hash === hash_string ) {
+                return true;
+            }
+        } else {
+            return false;
         }
-
-        // Add a media query change listener
-        mql.addListener(function (m) {
-
-            if(m.matches) {
-                // Changed to portrait
-            }
-            else {
-                // Changed to landscape
-            }
-        });
     }
 
 
 
-    /* ================================================================ */
-    /*                                                                  */
-    /*                     DOCUMENT / WINDOW CALLS                      */
-    /*                                                                  */
-    /* ================================================================ */
+
+    /* KONAMI
+    ------------------------------------------------------------------------ */
+    App.konamiCode = function() {
+
+        var secret = '38403840373937396665',
+            input  = '',
+            timer;
+
+        $(document).keyup(function (e) {
+
+            input += e.which;
+
+            clearTimeout(timer);
+
+            timer = setTimeout(function() {
+                input = '';
+            }, 500);
+
+            // console.log(e.which, input);
+
+            if( input == secret ) {
+                console.log('konami code fired!');
+                $('#e').append('<div class="mario"></div>');
+            }
+        })
+    }
+
+    App.konamiCode();
+
+
+
+
+    // animate_scrollTop();
+    function animate_scrollTop(target, duration, easing, offset){
+        if(target){
+            if(/(iPhone|iPod)\sOS\s6/.test(navigator.userAgent)){
+                $('html, body').animate({
+                    scrollTop: target.offset().top
+                }, duration, easing);
+            } else {
+                $('html, body').animate({
+                    scrollTop: target.offset().top - (offset)
+                }, duration, easing);
+            }
+        }
+    }
+
+    function elementInViewport(el) {
+      var top = el.offsetTop;
+      var left = el.offsetLeft;
+      var width = el.offsetWidth;
+      var height = el.offsetHeight;
+
+      while(el.offsetParent) {
+        el = el.offsetParent;
+        top += el.offsetTop;
+        left += el.offsetLeft;
+      }
+
+      return (
+        top < (window.pageYOffset + window.innerHeight) &&
+        left < (window.pageXOffset + window.innerWidth) &&
+        (top + height) > window.pageYOffset &&
+        (left + width) > window.pageXOffset
+      );
+    }
+
 
 
 
     /* DOCUMENT READY
-    ================================================== */
+    ------------------------------------------------------------------------ */
     $(document).ready(function(){
         
-        // do stuff on document ready
-        FF.init();
-        FF.matchMedia();
+        App.init();
+
 
     });
 
     /* WINDOW LOAD
-    ================================================== */
+    ------------------------------------------------------------------------ */
     $(window).load(function(){
         
-        // do stuff once the page has finished loading
-        FF.lazyLoadImage();
+        App.lazyLoadImage();
+
+        /**
+         * Flexslider Init
+         */
+        $('.flexslider').flexslider({});
+
 
     });
 
     /* WINDOW SCROLL
-    ================================================== */
-    $(window).scroll(function(){
+    ------------------------------------------------------------------------ */
+    $(window).on('scroll', function(){
 
-        // DEBUG - winY position
-        if (DEBUG) { var winY = $(window).scrollTop(); console.log(winY);}
+        // App.lazyLoadImage();
 
-        FF.lazyLoadImage();
 
     });
 
 
     /* WINDOW RESIZE
-    ================================================== */
+    ------------------------------------------------------------------------ */
     $(window).resize(function(){   
         
-        // do stuff on window resize
 
 
     }).trigger('resize');
@@ -538,53 +562,21 @@
 
 
     /* ORIENTATION CHANGE (requires jQuery mobile)
-    ================================================== */
+    ------------------------------------------------------------------------ */
     window.addEventListener("orientationchange", function() {
-        // Announce the new orientation number
         
-        console.log('Orientation is: ', window.orientation);
+        // console.log('Orientation is: ', window.orientation);
 
     }, false);
-
-        // Some devices dont have this event but instead listen for resize event
-        window.addEventListener("resize", function() {
-            // Get screen size (inner/outerWidth, inner/outerHeight)
-            
-        }, false);
-
 
 
 
     /* SELF INVOKING ANONYMOUS FUNCTION(s)
-    ================================================== */
+    ------------------------------------------------------------------------ */
     (function(){ 
 
-        FF.setVars(); // set variables
-        //FF.skrollr(); // skroller init
+          
 
-        if(window.location.hash) {
-            // puts hash in variable, and removes the # character
-            var hash = window.location.hash.substring(1); 
-            
-            if (hash === 'CUSTOM_HASH_HERE') {
-                // do something when custom hash is in url
-            }
-        } else {
-            // no hash found, don't do anything
-        }        
-
-    })();
+    })(); 
 
 })(jQuery);
-
-
-// viewport width check
-function viewport_mobile() {
-    // it is mobie sized viewport (landscape)
-    if ( $(window).width() <= 480 ) { return true; } 
-    // not mobile viewport (greater than -> tablet or desktop)
-    else if ( $(window).width() > 480 ) { return false; }
-}
-
-// Viewport selectors - URL: http://www.appelsiini.net/projects/viewport
-(function($){$.belowthefold=function(element,settings){var fold=$(window).height()+$(window).scrollTop();return fold<=$(element).offset().top-settings.threshold;};$.abovethetop=function(element,settings){var top=$(window).scrollTop();return top>=$(element).offset().top+$(element).height()-settings.threshold;};$.rightofscreen=function(element,settings){var fold=$(window).width()+$(window).scrollLeft();return fold<=$(element).offset().left-settings.threshold;};$.leftofscreen=function(element,settings){var left=$(window).scrollLeft();return left>=$(element).offset().left+$(element).width()-settings.threshold;};$.inviewport=function(element,settings){return!$.rightofscreen(element,settings)&&!$.leftofscreen(element,settings)&&!$.belowthefold(element,settings)&&!$.abovethetop(element,settings);};$.extend($.expr[':'],{"below-the-fold":function(a,i,m){return $.belowthefold(a,{threshold:0});},"above-the-top":function(a,i,m){return $.abovethetop(a,{threshold:0});},"left-of-screen":function(a,i,m){return $.leftofscreen(a,{threshold:0});},"right-of-screen":function(a,i,m){return $.rightofscreen(a,{threshold:0});},"in-viewport":function(a,i,m){return $.inviewport(a,{threshold:0});}});})(jQuery);

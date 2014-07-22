@@ -1,46 +1,41 @@
 /* style.scss */
- 
-/* SASS Libraries */
+  
+// Dependencies
 @import "compass",
-        "ffw"; 
+        "lib/ffw";
 
-/* Reset & Vendor Libs */
-@import "vendor/reset",
-        "vendor/codemirror",
-        "vendor/addthis";
+// Components & Libraries     
+@import "../components/normalize.css/normalize.css"; 
+@import "../components/animate.css/animate.min.css";
+@import "../components/font-awesome/css/font-awesome.min.css";
 
-/* Base & Vars */
-@import "config",
-        "core/grid",
-        "core/base",
-        "core/typography",
-        "core/fonts",
-        "core/body";
 
-/* Librarires */
-@import "lib/extenders",
+// Config Vars
+@import "config"; 
+
+// Core
+@import "lib/grid",
+        "lib/body",
         "lib/helpers",
+        "lib/fonts",
         "lib/forms",
-        "lib/social",
-        "lib/icons",
         "lib/buttons",
-        "lib/shapes",
-        "lib/animate",
-        "lib/code",
-        "lib/modals";
+        "lib/plugins"; 
 
-/* Modules & Components */
-@import "modules/header",
-        "modules/navigation",
+// Modules
+@import "modules/elements",
+        "modules/header",
         "modules/hero",
-        "modules/footer",
-        "modules/slider",
-        "modules/widgets",
-        "modules/comments",
-        "modules/content-shared",
-        "modules/content-posts";
+        "modules/modals",
+        "modules/sliders",
+        "modules/social",
+        "modules/content",
+        "modules/footer";
 
-/* Optional Post-Type Styles */
-@import "modules/staff";
-@import "modules/portfolio";
-@import "modules/media";
+
+// Pages
+@import "pages/home";
+
+
+// Media Queries
+@import "media/mobile";

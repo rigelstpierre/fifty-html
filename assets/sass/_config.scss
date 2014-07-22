@@ -1,42 +1,12 @@
 /* _config.scss */
 
-
-/* COLORS                           | **REQUIRED**
-================================================== */
-
-// BLACKS
-$colorPrimary:          #2a2a2a;
-$colorPrimaryWarm:      #3a3a3a;
-$colorPrimaryDark:      #1c1c1c;
-$colorPrimaryLight:     adjust_hue(saturate(darken(#2a2a2a, 13), 21), 0);
-
-//  GRAYS
-$colorSecondary:        #eae9e9;
-$colorSecondaryDark:    #363636;
-$colorSecondaryLight:   #7c7c7c;
-
-// LIGHT GRAY
-$colorTertiary:         #dddddd;
-$colorTertiaryDark:     #cccccc;
-$colorTertiaryLight:    #cccccc;
-
-// BLUE
-$colorQuaternary:       #2f7499;
-
-// TEXT / ANCHORS
-$colorTextDefault:      #433f3e;
-$colorTextLight:        #a3a3a3;
-$colorAnchorDefault:    #2f7499;
-
-// MORE GRAY
-$colorGrayPrimary:      #adadad;
-$colorGrayDarker:       #464646;
-
-
-/* GRID SETTINGS                    | **REQUIRED**
-================================================== */
-$widescreen             : 1140;
-$desktop                : 960;
+/**
+ * Grid Settings
+ * Width settings for media queries in pixels
+ * REQUIRED: All
+ */
+$widescreen             : 1280;
+$desktop                : 980;
 $tablet                 : 768;
 $mobile-landscape       : 480;
 $mobile-portrait        : 320;
@@ -50,22 +20,75 @@ $responsive             : true;
 $from-direction         : left;
 
 
+/**
+ * Colors
+ * Colors of various elements as per style guide
+ * REQUIRED: $colorPrimary<>, $colorSecondary<>, $colorTextDefault
+ */
 
-/* STYLE OPTIONS & TOGGLES        
-================================================== */
-$transparency-header:     false;
+
+// BLUES
+$colorPrimary:              #3eaecc;
+$colorPrimaryDark:          #157eaa;
+$colorPrimaryLight:         #d5e3e7;
+
+// REDISH PINK
+$colorSecondary:            #f15966;
+$colorSecondaryDark:        #f28d95;
+$colorSecondaryLight:       #f28d95;
+
+// GRAYS
+$colorGray:                 #cccccc;
+$colorGrayDark:             #383c3e;
+$colorGrayLight:            #e6e6e6;
+
+// WHITES
+$colorOffwhite:             #f0f0f0;
+
+// TEXT
+$colorTextBody:             #4a3c32;
+$colorTextDefault:          #4a3c32;
+$colorTextHeadingAlt:       #f1f0e8;
+$colorTextGray:             #a3a3a3;
+
+// RAINBOW
+$colorBrown:                #4a3c32;
+  $colorBrownLight:         #807870;
+$colorRed:                  #c5350a;
+$colorOrange:               #fd4c1a;
+$colorYellow:               #fd8728;
+  $colorYellowLight:        #f8af41;
+$colorTeal:                 #77b191;
+$colorGreen:                #419483;
+
+
+/**
+ * Font Sizes
+ * Headings, Paragraphs and other common elements
+ */
+ $fontSizeHeading1:         55px;
+ $fontSizeHeading2:         45px;
+ $fontSizeHeading3:         34px;
+ $fontSizeHeading4:         28px;
+ $fontSizeHeading5:         21px;
+ $fontSizeHeading6:         18px;
 
 
 
+/**
+ * Compass Settings
+ * Flags for compass
+ */
+$experimental-support-for-svg: true;
 
-/* FONTS                            | **REQUIRED**
-================================================== */
-$default      :  "opensans", Helvetica, Arial, sans-serif;
-$default-alt  :  "opensans-condensed", "Helvetica Neue";
+
+
+/**
+ * Font Settings
+ * Shortened variable names for font families for degradation convenience
+ */
+$default      :  "adobe-caslon-pro", "Adobe Caslon Pro", Georgia, serif;
+$default-alt  :  "brothers-ot", "BrothersOT", Helvetica, "Helvetica Neue", sans-serif;
 $serif        :  Georgia, serif;
-$pictos       :  "pictos";
+$serif-alt    :  "adobe-caslon", "Adobe Caslon" serif;
 $fa           :  "fontawesome";
-$arrrows      :  "arrrows";
-$social       :  "socialico";
-$socialico    :  "socialico";
-

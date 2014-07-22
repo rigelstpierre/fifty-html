@@ -1,0 +1,5 @@
+
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: File to import not found or unreadable: compass.\A               Load path: /Users/fiftyandfifty/Sites/throwbacksummer/git-repo/wp-content/themes/throwbacksummer (DEPRECATED)\A         on line 4 of assets/sass/style.scss\A \A 1: /* style.scss */\A 2:   \A 3: // Dependencies\A 4: @import \"compass\",\A 5:         \"lib/ffw\";\A 6: \A 7: // Components & Libraries     \A 8: @import \"../components/normalize.css/normalize.css\"; \A 9: @import \"../components/animate.css/animate.min.css\";"; }

@@ -1,0 +1,23 @@
+// _elements.scss
+
+
+
+/**
+ * Spacer
+ */
+.spacer {
+  width:100%;
+  height:auto;
+  margin: 40px auto;
+}
+
+/**
+ * Text Image
+ * Images with text too complicated for normal rendering. Keep in this wrapper
+ */
+.text-image {
+  position:relative;
+  @include inline-block;
+}
+
+

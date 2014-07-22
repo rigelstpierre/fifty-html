@@ -1,0 +1,37 @@
+/* _fonts.scss */
+
+@mixin fff($font-family, $file-path, $weight: normal, $style: normal, $asset-pipeline: false ) {
+  @font-face {
+    font-family: $font-family;
+    src: url('#{$file-path}.eot');                                        /* IE9 Compat Modes */
+    src: url('#{$file-path}.eot?#iefix') format('embedded-opentype'),     /* IE6-IE8 */
+         url('#{$file-path}.woff') format('woff'),                        /* Modern Browsers */
+         url('#{$file-path}.ttf')  format('truetype'),                    /* Safari, Android, iOS */
+         url('#{$file-path}.svg##{$font-family}') format('svg');          /* Legacy iOS */
+    font-style: $style;
+    font-weight: $weight;
+  }
+}
+
+
+// Adobe Caslon Pro
+// @include fff(adobe-caslon-pro, '../fonts/adobe-caslon-pro/adobe-caslon-pro-regular', normal);
+// @include fff(adobe-caslon-pro, '../fonts/adobe-caslon-pro/adobe-caslon-pro-italic', normal, italic);
+// @include fff(adobe-caslon-pro, '../fonts/adobe-caslon-pro/adobe-caslon-pro-semibold', 600);
+// @include fff(adobe-caslon-pro, '../fonts/adobe-caslon-pro/adobe-caslon-pro-bold', bold);
+
+
+/* Chrome v33 "invisible text" fix
+================================================== */
+body {
+-webkit-animation-duration: 0.1s;
+-webkit-animation-name: fontfix;
+-webkit-animation-iteration-count: 1;
+-webkit-animation-timing-function: linear;
+-webkit-animation-delay: 0.1s;
+}
+
+@-webkit-keyframes fontfix {
+  from { opacity: 1; }
+  to { opacity: 1; }
+}

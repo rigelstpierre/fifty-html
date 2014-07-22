@@ -1,0 +1,230 @@
+/* MEDIA
+================================================== */
+@mixin media($type) {
+  
+  // MQ {max-width} vars
+  $widescreen_max        : #{$widescreen - 1}px;
+  $desktop_max           : #{$desktop - 1}px;
+  $tablet_max            : #{$tablet - 1}px;
+  $mobile_landscape_max  : #{$mobile-landscape - 1}px;
+  $mobile_portrait_max   : #{$mobile-portrait - 1}px;
+  $mobile_max            : #{$mobile - 1}px;
+  // MQ {min-width} vars
+  $widescreen_min        : #{$widescreen}px;
+  $desktop_min           : #{$desktop}px;
+  $tablet_min            : #{$tablet}px;
+  $mobile_landscape_min  : #{$mobile-landscape}px;
+  $mobile_portrait_min   : #{$mobile-portrait}px;
+  $mobile_min            : #{$mobile}px;
+
+
+  @if $responsive == true {
+    
+    // MQ -> Widescreee
+    // @if $type == desktop {
+    //   @media only screen and ( min-width: $desktop_min ) { @content; }
+    // }
+    // MQ -> Desktop
+    @if $type == desktop {
+      @media only screen and ( min-width: $desktop_min ) { @content; }
+    }
+    // MQ -> Tablet
+    // @else if $type == tablet {
+    //   @media only screen and ( min-width: $tablet_min ) and ( max-width: $desktop_max ) { @content; }
+    // }
+    // MQ -> Mobile
+    @else if $type == mobile {
+      @media only screen and ( max-width: $tablet_max ) { @content; }
+    }
+    // MQ -> Mobile Landscape
+    @else if $type == mobile_landscape {
+      @media only screen and ( min-width: $mobile_landscape_min ) and ( max-width: $tablet_max ) { @content; }
+    }
+  }
+
+}
+
+@mixin clearfix(){
+  &:after { content: "\0020"; display: block; height: 0; clear: both; visibility: hidden; }
+}
+
+/* CONTAINER(S)
+================================================== */
+@mixin container {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 $margin;
+  max-width: #{$widescreen}px;
+  
+
+  // CLEARFIX 
+  @include clearfix;
+
+  // MEDIA QUERIES
+  @if $responsive == true {
+
+    // @include media(widescreen)           { max-width: #{$widescreen}px; padding:0 10px; }
+    // @include media(desktop)           { max-width: #{$desktop}px; padding:0 10px; }
+    @include media(tablet)            { max-width: #{$tablet}px; padding:0 10px; min-width: 980px; }
+    @include media(mobile)            { max-width: #{$mobile}px; }
+    @include media(mobile_landsacpe)  { max-width: #{$mobile-portrait}px; }
+  }
+}
+  @include media(desktop) { min-width: 980px; }
+
+  // CLASSES
+  .container { @include container; }
+  .container-thin { 
+    @include container; 
+    max-width:980px;
+  }
+  .container-full { 
+    @include clearfix; 
+    width:100%; 
+  }
+
+  .container-max {
+    @include container;
+    padding-left: 30px;
+    padding-right: 30px;
+
+    @include media(mobile) { 
+      min-width: 300px; 
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    // @include media(tablet) { min-width: 0; }
+  }
+  
+/* OMEGA
+================================================== */
+@mixin omega(
+  $from     : $from-direction
+) {
+  $from   : unquote($from);
+  $to     : opposite-position($from);
+  $hack   : opposite-position(right);
+
+  float: right;
+  margin-#{$to}: 0;
+}
+
+
+
+
+/* SPANS (1-12)
+================================================== */
+.span1, %span1  { 
+  width: 8.333333333333332%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+.span2, %span2  { 
+  width: 16.666666666666664%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+// ONE-FOURTH
+.span3, %span3, .one-fourth  { 
+  width: 25%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+// ONE-THIRD
+.span4, %span4, .one-third  { 
+  width: 33.33333333333333%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+.span5, %span5  { 
+  width: 41.66666666666667%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+// ONE-HALF
+.span6, %span6, .one-half  { 
+  width: 50%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+.span7, %span7  { 
+  width: 58.333333333333336%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+// TWO-THIRDS
+.span8, %span8, .two-thirds  { 
+  width: 66.66666666666666%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+// THREE-FOURTHS
+.span9, %span9, .three-fourths  { 
+  width: 75%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+.span10, %span10 { 
+  width: 83.33333333333334%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+.span11, %span11 { 
+  width: 91.66666666666666%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+.span12, %span12 { 
+  width: 100%;
+  float:left;
+  @include media(mobile) { width:100%; }
+}
+
+
+  .span-gutters {
+    margin-left:10px;
+    margin-right:10px;
+  }
+
+  // span-centered
+  .center, .span-center {
+    float:none !important;
+    margin:0 auto;
+  }
+
+  
+  .halves {
+    @include clearfix;
+  }
+    .half {width:50%;float:left;}
+
+  .thirds {
+    @include clearfix;
+  }
+    .third {width:33.33333337%;float:left;}
+
+  .fourths {
+    @include clearfix;
+  }
+    .fourth {width:25%;float:left;}
+
+  .fifths {
+    @include clearfix;
+  }
+    .fifth { 
+      width: 20%;float:left; 
+
+      @include media(mobile) { width: 100%; }
+    }
+
+
+
+
+/* ROW(S)
+================================================== */
+.row {
+  @include clearfix;
+  margin-left:-#{$margin};
+  margin-right:-#{$margin};
+  margin-bottom:20px;
+}

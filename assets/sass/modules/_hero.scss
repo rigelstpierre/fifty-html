@@ -1,37 +1,11 @@
-/* _hero.scss */
+// _hero.scss
 
-/* HERO
-================================================== */
+
+/**
+ * Hero
+ * Hero unit with various page-specific inheritors
+ */
 #hero {
-  width:100%;height:450px;
-  background-color:$colorSecondaryDark;
-  @include background-size(cover);
-  background-repeat:no-repeat;
-  // background-position:0 0;
-  background-position: 50% 50%;
 
 
-  // HERO-YOUTUBE - hack to remove black borders
-  &.hero-youtube {
-    background-position:-20%;
-  }
-  
-  .hero-overlay {
-
-  }
-  .container {
-    position:relative;
-    display:table;
-    text-align:center;
-    height:450px;
-  }
-  .hero-inner {
-    display:table-cell;
-    vertical-align:middle;
-    width:100%;height:auto;
-  }
-
-  h1 {
-    color:#ffffff;
-  }
 }
