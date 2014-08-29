@@ -61,11 +61,3 @@
 
     h3 { color: #a19b94; }
   }
-
-
-#thanks {
-  text-align: center;
-  .share-label { display:none; }
-
-  .menu-social { @include inline-block;  }
-}

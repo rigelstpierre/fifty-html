@@ -26,41 +26,10 @@ $from-direction         : left;
  * REQUIRED: $colorPrimary<>, $colorSecondary<>, $colorTextDefault
  */
 
+$colorPrimary:              #000000;
+$colorSecondary:            #ffff00;
 
-// BLUES
-$colorPrimary:              #3eaecc;
-$colorPrimaryDark:          #157eaa;
-$colorPrimaryLight:         #d5e3e7;
-
-// REDISH PINK
-$colorSecondary:            #f15966;
-$colorSecondaryDark:        #f28d95;
-$colorSecondaryLight:       #f28d95;
-
-// GRAYS
-$colorGray:                 #cccccc;
-$colorGrayDark:             #383c3e;
-$colorGrayLight:            #e6e6e6;
-
-// WHITES
-$colorOffwhite:             #f0f0f0;
-
-// TEXT
-$colorTextBody:             #4a3c32;
-$colorTextDefault:          #4a3c32;
-$colorTextHeadingAlt:       #f1f0e8;
-$colorTextGray:             #a3a3a3;
-
-// RAINBOW
-$colorBrown:                #4a3c32;
-  $colorBrownLight:         #807870;
-$colorRed:                  #c5350a;
-$colorOrange:               #fd4c1a;
-$colorYellow:               #fd8728;
-  $colorYellowLight:        #f8af41;
-$colorTeal:                 #77b191;
-$colorGreen:                #419483;
-
+$colorTextBody:             #3b3b3b;
 
 /**
  * Font Sizes
@@ -87,7 +56,7 @@ $experimental-support-for-svg: true;
  * Font Settings
  * Shortened variable names for font families for degradation convenience
  */
-$default      :  "adobe-caslon-pro", "Adobe Caslon Pro", Georgia, serif;
+$default      :  "Open Sans", Georgia, serif;
 $default-alt  :  "brothers-ot", "BrothersOT", Helvetica, "Helvetica Neue", sans-serif;
 $serif        :  Georgia, serif;
 $serif-alt    :  "adobe-caslon", "Adobe Caslon" serif;

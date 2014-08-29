@@ -9,7 +9,6 @@ fifty-html
 * Compass (config.rb)
 * Guard (Guardfile)
 * Bundler (Gemfile)
-* 960 Custom Grid (Media Queries OFF by default)
 
 
 #### Requirements

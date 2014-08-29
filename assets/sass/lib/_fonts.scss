@@ -15,14 +15,16 @@
 
 
 // Adobe Caslon Pro
-// @include fff(adobe-caslon-pro, '../fonts/adobe-caslon-pro/adobe-caslon-pro-regular', normal);
-// @include fff(adobe-caslon-pro, '../fonts/adobe-caslon-pro/adobe-caslon-pro-italic', normal, italic);
-// @include fff(adobe-caslon-pro, '../fonts/adobe-caslon-pro/adobe-caslon-pro-semibold', 600);
-// @include fff(adobe-caslon-pro, '../fonts/adobe-caslon-pro/adobe-caslon-pro-bold', bold);
+@include fff(opensans, '../fonts/opensans/OpenSans-Regular', normal);
+@include fff(opensans, '../fonts/opensans/OpenSans-Bold', bold);
+@include fff(opensans, '../fonts/opensans/OpenSans-Semibold', 600);
+@include fff(opensans, '../fonts/opensans/OpenSans-Light', 300);
 
 
-/* Chrome v33 "invisible text" fix
-================================================== */
+/**
+ * Chrome v33 "invisible text" fix
+ */
+
 body {
 -webkit-animation-duration: 0.1s;
 -webkit-animation-name: fontfix;
@@ -30,7 +32,6 @@ body {
 -webkit-animation-timing-function: linear;
 -webkit-animation-delay: 0.1s;
 }
-
 @-webkit-keyframes fontfix {
   from { opacity: 1; }
   to { opacity: 1; }
